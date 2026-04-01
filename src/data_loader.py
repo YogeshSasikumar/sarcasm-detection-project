@@ -1,7 +1,5 @@
-"""
-data_loader.py - Load, validate and preview the sarcasm dataset
-"""
-
+import os
+import gdown
 import pandas as pd
 from utils.config import DATASET_PATH, REQUIRED_COLUMNS
 from utils.logger import get_logger
@@ -18,12 +16,23 @@ class DataLoader:
 
     def load(self) -> pd.DataFrame:
         """Load dataset from CSV, validate columns, and handle missing values."""
+        
+        if not os.path.exists(self.path):
+            logger.info("Dataset not found at %s. Attempting to download from Google Drive...", self.path)
+            os.makedirs(os.path.dirname(self.path), exist_ok=True)
+            url = f'https://drive.google.com/uc?id=1cGOJlV_snlmTI5YZ3iNH066ph5M_3bEO'
+            try:
+                gdown.download(url, self.path, quiet=False)
+            except Exception as e:
+                logger.error("Failed to download dataset from Google Drive: %s", str(e))
+                raise
+
         logger.info("Loading dataset from: %s", self.path)
 
         try:
             self.df = pd.read_csv(self.path)
-        except FileNotFoundError:
-            logger.error("Dataset not found at %s", self.path)
+        except Exception as e:
+            logger.error("Error reading CSV file: %s", str(e))
             raise
 
         logger.info("Raw dataset shape: %s", self.df.shape)

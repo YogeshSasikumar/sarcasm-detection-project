@@ -412,7 +412,7 @@ def render_dashboard(history: list):
 
     # ── Emotion bar ───────────────────────────────────────────────────────────
     with col_right:
-        emo_counts = df["emotion"].value_counts().reindex(EMOTION_LABELS, fill_value=0)
+        emo_counts = df["emotion_str"].value_counts().reindex(EMOTION_LABELS, fill_value=0)
         fig_emo = go.Figure(go.Bar(
             x=emo_counts.index.tolist(),
             y=emo_counts.values.tolist(),
@@ -469,12 +469,12 @@ def render_dashboard(history: list):
 
     # ── Prediction history table ───────────────────────────────────────────────
     with st.expander("📋 Full Prediction History"):
-        display_cols = ["text", "context", "label_str", "emotion", "language", "confidence"]
+        display_cols = ["text", "context", "label_str", "emotion_str", "language", "confidence"]
         display_cols = [c for c in display_cols if c in df.columns]
         st.dataframe(
             df[display_cols].rename(columns={
                 "label_str": "Sarcasm", "text": "Text",
-                "context": "Context", "emotion": "Emotion",
+                "context": "Context", "emotion_str": "Emotion",
                 "language": "Language", "confidence": "Confidence",
             }),
             use_container_width=True,

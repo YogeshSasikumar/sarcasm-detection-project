@@ -1,7 +1,16 @@
-# Python virtual environment
+# Environment and Dependencies
 venv/
 .venv/
 env/
+
+# Dataset and Models (Exclude from GitHub)
+data/
+datasets/
+*.csv
+*.zip
+*.pt
+*.pkl
+*.h5
 
 # Byte-compiled / cache
 __pycache__/
@@ -24,9 +33,6 @@ build/
 # Logs
 logs/
 *.log
-
-# Dataset (do not push raw data)
-data/sample_dataset.csv
 
 # OS
 .DS_Store
